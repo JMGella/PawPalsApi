@@ -1,0 +1,73 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# Compiled class files
+*.class
+
+
+# Logs
+*.log
+/logs/
+/*.log
+
+# Spring Boot build artifacts
+*.jar
+*.war
+*.ear
+
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Credenciales o configuración local
+application.yml
+.env
+*.env
+*.key
+*.pem
+
+# Coverage / test results
+/coverage/
+/test-output/
+*.exec
+*.ec
+*.out
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo

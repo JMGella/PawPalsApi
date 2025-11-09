@@ -1,0 +1,54 @@
+CREATE TABLE users (
+id SERIAL PRIMARY KEY,
+email TEXT NOT NULL UNIQUE,
+password_hash TEXT NOT NULL,
+display_name TEXT NOT NULL,
+username TEXT UNIQUE,
+profile_image_url TEXT,
+created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE dogs (
+id SERIAL PRIMARY KEY,
+owner_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+name TEXT NOT NULL,
+breed TEXT,
+birthdate DATE,
+description TEXT,
+profile_image_url TEXT,
+created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+
+CREATE TABLE follow_dogs (
+id SERIAL PRIMARY KEY,
+follower_user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+dog_id INTEGER NOT NULL REFERENCES dogs(id) ON DELETE CASCADE,
+created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+CONSTRAINT uq_follow UNIQUE (follower_user_id, dog_id)
+);
+
+CREATE TABLE walks (
+id SERIAL PRIMARY KEY,
+creator_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+title TEXT NOT NULL,
+description TEXT,
+start_time TIMESTAMPTZ NOT NULL,
+end_time TIMESTAMPTZ,
+latitude DOUBLE PRECISION NOT NULL,
+longitude DOUBLE PRECISION NOT NULL,
+max_dogs INTEGER,
+status TEXT NOT NULL DEFAULT 'scheduled',
+created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+
+CREATE TABLE walk_dogs (
+id SERIAL PRIMARY KEY,
+walk_id INTEGER NOT NULL REFERENCES walks(id) ON DELETE CASCADE,
+dog_id INTEGER NOT NULL REFERENCES dogs(id) ON DELETE CASCADE,
+handler_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+status TEXT NOT NULL DEFAULT 'joined',
+joined_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+CONSTRAINT uq_walk_dog UNIQUE (walk_id, dog_id)
+);
