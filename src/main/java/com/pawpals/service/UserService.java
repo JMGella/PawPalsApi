@@ -4,6 +4,7 @@ import com.pawpals.model.User;
 import com.pawpals.model.dto.UserInDTO;
 import com.pawpals.model.dto.UserOutDTO;
 import com.pawpals.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -17,10 +18,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserOutDTO createUser(UserInDTO in) {
@@ -33,8 +36,7 @@ public class UserService {
 
         User user = new User();
         user.setEmail(in.getEmail());
-        // TODO: HASHEAR PASSWORD
-        user.setPasswordHash(in.getPassword());
+        user.setPasswordHash(passwordEncoder.encode(in.getPassword()));
         user.setDisplayName(in.getDisplayName());
         user.setUsername(in.getUsername());
         user.setProfileImageUrl(in.getProfileImageUrl());
@@ -55,4 +57,13 @@ public class UserService {
         List<UserOutDTO> userOutDTOList = modelMapper.map(users, new TypeToken<List<UserOutDTO>>() {}.getType());
         return userOutDTOList;
     }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new IllegalArgumentException("User not found");
+        }
+        userRepository.deleteById(id);
+    }
+
 }

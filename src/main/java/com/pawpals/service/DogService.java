@@ -55,4 +55,13 @@ public class DogService {
         List<DogOutDTO> dogOutDTOList = modelMapper.map(dogs, new TypeToken<List<DogOutDTO>>() {}.getType());
         return dogOutDTOList;
     }
+
+    @Transactional
+    public void deleteDog(Long id) {
+        if (!dogRepository.existsById(id)) {
+            throw new IllegalArgumentException("Dog not found");
+        }
+        dogRepository.deleteById(id);
+    }
+
 }
