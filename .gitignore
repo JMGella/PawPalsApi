@@ -59,6 +59,7 @@ application.yml
 *.key
 *.pem
 
+
 # Coverage / test results
 /coverage/
 /test-output/

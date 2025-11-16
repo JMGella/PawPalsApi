@@ -1,0 +1,19 @@
+package com.pawpals.repository;
+
+import com.pawpals.model.ParticipationStatus;
+import com.pawpals.model.WalkDog;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface WalkDogRepository extends JpaRepository<WalkDog, Long> {
+
+    boolean existsByWalkIdAndDogId(Long walkId, Long dogId);
+
+    List<WalkDog> findByWalkId(Long walkId);
+
+    List<WalkDog> findByDogId(Long dogId);
+
+    long countByWalkIdAndStatus(Long walkId, ParticipationStatus status);
+
+}
