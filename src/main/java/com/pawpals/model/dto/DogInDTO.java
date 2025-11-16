@@ -13,9 +13,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class DogInDTO {
 
-    @NotNull
-    private Long ownerId;          // se usará en el service para buscar el User
-
     @NotBlank
     private String name;
 

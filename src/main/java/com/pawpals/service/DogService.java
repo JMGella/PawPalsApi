@@ -28,8 +28,8 @@ public class DogService {
         this.modelMapper = modelMapper;
     }
 
-    public DogOutDTO createDog(DogInDTO in) {
-        User owner = userRepository.findById(in.getOwnerId()).orElseThrow(() -> new IllegalArgumentException("Owner not found"));
+    public DogOutDTO createDog(Long userId, DogInDTO in) {
+        User owner = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Owner not found"));
 
         Dog dog = new Dog();
         dog.setOwner(owner);

@@ -28,9 +28,8 @@ public class DogController {
     @Operation(summary = "Create dog for a user")
     @PostMapping("/users/{userId}/dogs")
     public ResponseEntity<DogOutDTO> createDog(@PathVariable Long userId, @Valid @RequestBody DogInDTO body) {
-        body.setOwnerId(userId); // forzamos el owner desde la URL
         logger.info("BEGIN Creating dog {}", body);
-        DogOutDTO created = dogService.createDog(body);
+        DogOutDTO created = dogService.createDog(userId, body);
         logger.info("END Creating dog {}", created);
         return ResponseEntity.ok(created);
     }
