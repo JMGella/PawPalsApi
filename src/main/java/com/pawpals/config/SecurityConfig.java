@@ -1,61 +1,65 @@
-package com.pawpals.security;
+package com.pawpals.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.jwt.*;
-import org.springframework.stereotype.Component;
+import com.pawpals.security.AuthEntryPointJwt;
+import com.pawpals.security.AuthTokenFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpMethod;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.stream.Collectors;
-
-@Component
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+    private final AuthEntryPointJwt unauthorizedHandler;
+    private final AuthTokenFilter authTokenFilter;
 
-    private final JwtEncoder jwtEncoder;
-    private final JwtDecoder jwtDecoder;
-
-    public SecurityConfig(JwtEncoder jwtEncoder, JwtDecoder jwtDecoder) {
-        this.jwtEncoder = jwtEncoder;
-        this.jwtDecoder = jwtDecoder;
+    public SecurityConfig(AuthEntryPointJwt unauthorizedHandler,
+                          AuthTokenFilter authTokenFilter) {
+        this.unauthorizedHandler = unauthorizedHandler;
+        this.authTokenFilter = authTokenFilter;
     }
 
-    public String generateJwtToken(Authentication authentication) {
-        Instant now = Instant.now();
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/pawpalsapi/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/pawpalsapi/users").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                );
 
-        String scope = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(" "));
+        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("pawpals-api")
-                .issuedAt(now)
-                .expiresAt(now.plus(1, ChronoUnit.HOURS))
-                .subject(authentication.getName())
-                .claim("scope", scope)
-                .build();
-
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims))
-                .getTokenValue();
+        return http.build();
     }
 
-    public String getUserNameFromJwtToken(String token) {
-        return jwtDecoder.decode(token).getSubject();
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
-    public boolean validateJwtToken(String authToken) {
-        try {
-            jwtDecoder.decode(authToken);
-            return true;
-        } catch (JwtException e) {
-            logger.error("Invalid JWT token: {}", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty: {}", e.getMessage());
-        }
-        return false;
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

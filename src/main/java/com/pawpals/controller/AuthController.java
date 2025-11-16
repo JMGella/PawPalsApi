@@ -33,8 +33,7 @@ public class AuthController {
 
     @Operation(summary = "Request JWT token")
     @PostMapping("/token")
-    public ResponseEntity<JwtResponse> authenticateUser(
-            @Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -45,6 +44,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext()
                 .setAuthentication(authentication);
+
 
         String jwt = jwtUtils.generateJwtToken(authentication);
 
