@@ -41,4 +41,12 @@ public class DogController {
     public ResponseEntity<DogOutDTO> getDog(@PathVariable Long dogId) {
         return ResponseEntity.ok(dogService.getDogById(dogId));
     }
+
+    @Operation(summary = "Delete dog by id")
+    @DeleteMapping("/dogs/{dogId}")
+    public ResponseEntity<Void> deleteDog(@PathVariable Long dogId) {
+        dogService.deleteDog(dogId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
