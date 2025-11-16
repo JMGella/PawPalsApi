@@ -2,7 +2,6 @@ package com.pawpals.controller;
 
 import com.pawpals.model.dto.DogInDTO;
 import com.pawpals.model.dto.DogOutDTO;
-import com.pawpals.security.SecurityConfig;
 import com.pawpals.service.DogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

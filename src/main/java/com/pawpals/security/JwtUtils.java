@@ -32,10 +32,10 @@ public class JwtUtils {
                 .collect(Collectors.joining(" "));
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("pawpals-api")
+                .issuer("pawpals")
                 .issuedAt(now)
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
-                .subject(authentication.getName()) // email en tu caso
+                .subject(authentication.getName())
                 .claim("scope", scope)
                 .build();
 
@@ -59,4 +59,3 @@ public class JwtUtils {
         return false;
     }
 }
-
