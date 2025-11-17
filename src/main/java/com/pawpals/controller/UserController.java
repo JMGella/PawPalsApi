@@ -57,5 +57,15 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Update user by id")
+    @PatchMapping("/{userId}")
+    public ResponseEntity<UserOutDTO> updateUser(@PathVariable Long userId, @RequestBody UserInDTO body) {
+        logger.info("BEGIN UPDATE User");
+        UserOutDTO updated = userService.updateUserPartial(userId, body);
+        logger.info("END UPDATE User");
+        return ResponseEntity.ok(updated);
+    }
+
+
 }
 

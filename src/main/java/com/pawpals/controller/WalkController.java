@@ -64,4 +64,14 @@ public class WalkController {
         logger.info("END Cancel walk " + walkId);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Update a walk")
+    @PatchMapping("/{walkId}")
+    public ResponseEntity<WalkOutDTO> updateWalk(@PathVariable Long walkId, @Valid @RequestBody WalkInDTO body) {
+        logger.info(" BEGIN Update walk " + walkId);
+        WalkOutDTO updated = walkService.updateWalk(walkId, body);
+        logger.info("END Update walk " + walkId);
+        return ResponseEntity.ok(updated);
+    }
+
 }

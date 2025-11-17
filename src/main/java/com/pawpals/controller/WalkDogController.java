@@ -50,4 +50,16 @@ public class WalkDogController {
         logger.info("END Leaving walk " + walkDogId);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Update dog participation status in a walk")
+    @PatchMapping("/walks/dogs/{walkDogId}")
+    public ResponseEntity<WalkDogOutDTO> updateParticipationStatus(@PathVariable Long walkDogId, @RequestBody WalkDogInDTO body) {
+
+        logger.info("BEGIN Update participation status " + walkDogId);
+        WalkDogOutDTO updated = walkDogService.updateParticipationStatus(walkDogId, body);
+        logger.info("END Update participation status " + walkDogId);
+
+        return ResponseEntity.ok(updated);
+    }
+
 }

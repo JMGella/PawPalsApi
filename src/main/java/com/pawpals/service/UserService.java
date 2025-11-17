@@ -66,4 +66,17 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    @Transactional
+    public UserOutDTO updateUserPartial(Long userId, UserInDTO body) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (body.getDisplayName() != null) user.setDisplayName(body.getDisplayName());
+        if (body.getUsername() != null) user.setUsername(body.getUsername());
+        if (body.getProfileImageUrl() != null) user.setProfileImageUrl(body.getProfileImageUrl());
+
+        User saved = userRepository.save(user);
+        return modelMapper.map(saved, UserOutDTO.class);
+    }
+
 }

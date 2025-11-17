@@ -57,4 +57,15 @@ public class DogController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Update dog by id")
+    @PatchMapping("/dogs/{dogId}")
+    public ResponseEntity<DogOutDTO> updateDog(@PathVariable Long dogId, @RequestBody DogInDTO body) {
+        logger.info(" BEGIN Updating dog {}", dogId);
+        DogOutDTO updated = dogService.updateDog(dogId, body);
+        logger.info("END Updating dog {}", updated);
+        return ResponseEntity.ok(updated);
+    }
+
+
+
 }

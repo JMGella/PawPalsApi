@@ -70,4 +70,19 @@ public class WalkDogService {
         WalkDog wd = walkDogRepository.findById(walkDogId).orElseThrow(() -> new IllegalArgumentException("Participation not found"));
         walkDogRepository.delete(wd);
     }
+
+    @Transactional
+    public WalkDogOutDTO updateParticipationStatus(Long walkDogId, WalkDogInDTO body) {
+
+        WalkDog walkDog = walkDogRepository.findById(walkDogId).orElseThrow(() -> new IllegalArgumentException("Participation not found"));
+
+        if (body.getStatus() != null) {
+            walkDog.setStatus(body.getStatus());
+            walkDog = walkDogRepository.save(walkDog);
+        }
+
+        return modelMapper.map(walkDog, WalkDogOutDTO.class);
+    }
+
+
 }

@@ -64,4 +64,31 @@ public class DogService {
         dogRepository.deleteById(id);
     }
 
+    @Transactional
+    public DogOutDTO updateDog(Long dogId, DogInDTO body) {
+
+        Dog dog = dogRepository.findById(dogId).orElseThrow(() -> new IllegalArgumentException("Dog not found"));
+
+
+        if (body.getName() != null) {
+            dog.setName(body.getName());
+        }
+        if (body.getBreed() != null) {
+            dog.setBreed(body.getBreed());
+        }
+        if (body.getBirthdate() != null) {
+            dog.setBirthdate(body.getBirthdate());
+        }
+        if (body.getDescription() != null) {
+            dog.setDescription(body.getDescription());
+        }
+        if (body.getProfileImageUrl() != null) {
+            dog.setProfileImageUrl(body.getProfileImageUrl());
+        }
+
+        Dog saved = dogRepository.save(dog);
+        return modelMapper.map(saved, DogOutDTO.class);
+    }
+
+
 }

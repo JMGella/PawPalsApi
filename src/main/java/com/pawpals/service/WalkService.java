@@ -73,4 +73,33 @@ public class WalkService {
         walk.setStatus(WalkStatus.CANCELLED);
         walkRepository.save(walk);
     }
+
+    @Transactional
+    public WalkOutDTO updateWalk(Long walkId, WalkInDTO body) {
+
+        Walk walk = walkRepository.findById(walkId).orElseThrow(() -> new IllegalArgumentException("Walk not found"));
+
+        if (body.getTitle() != null) {
+            walk.setTitle(body.getTitle());
+        }
+        if (body.getDescription() != null) {
+            walk.setDescription(body.getDescription());
+        }
+        if (body.getStartTime() != null) {
+            walk.setStartTime(body.getStartTime());
+        }
+        if (body.getEndTime() != null) {
+            walk.setEndTime(body.getEndTime());
+        }
+        if (body.getMaxDogs() != null) {
+            walk.setMaxDogs(body.getMaxDogs());
+        }
+        if (body.getStatus() != null) {
+            walk.setStatus(body.getStatus());
+        }
+
+        Walk saved = walkRepository.save(walk);
+        return modelMapper.map(saved, WalkOutDTO.class);
+    }
+
 }

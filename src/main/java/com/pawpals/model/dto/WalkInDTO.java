@@ -1,5 +1,6 @@
 package com.pawpals.model.dto;
 
+import com.pawpals.model.WalkStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,6 @@ public class WalkInDTO {
     private Double longitude;
 
     private Integer maxDogs;
+
+    private WalkStatus status;
 }
