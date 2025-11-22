@@ -14,7 +14,6 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class WalkInDTO {
 
-    @NotNull
     private Long creatorId;
 
     @NotBlank

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WalkDogInDTO {
 
-    @NotNull
+
     private Long walkId;
 
     @NotNull

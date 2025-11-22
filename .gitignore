@@ -72,3 +72,5 @@ application.yml
 *.bak
 *.swp
 *.swo
+
+PawPals API.postman_collection.json

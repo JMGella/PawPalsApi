@@ -57,7 +57,7 @@ public class WalkController {
     }
 
     @Operation(summary = "Cancel a walk")
-    @PostMapping("/walks/{walkId}/cancel")
+    @DeleteMapping("/walks/{walkId}/cancel")
     public ResponseEntity<Void> cancelWalk(@PathVariable Long walkId) {
         logger.info(" BEGIN Cancel walk " + walkId);
         walkService.cancelWalk(walkId);
