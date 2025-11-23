@@ -90,5 +90,12 @@ public class DogService {
         return modelMapper.map(saved, DogOutDTO.class);
     }
 
+    @Transactional(readOnly = true)
+    public List<DogOutDTO> searchDogsByName(String name) {
+        List<Dog> dogs = dogRepository.findByNameContainingIgnoreCase(name);
+        return modelMapper.map(dogs, new TypeToken<List<DogOutDTO>>() {}.getType());
+    }
+
+
 
 }

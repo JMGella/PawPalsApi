@@ -9,4 +9,8 @@ public interface DogRepository extends JpaRepository<Dog, Long> {
 
     List<Dog> findByOwnerId(Long ownerId);
 
+    List<Dog> findByNameContainingIgnoreCase(String name);
+
+
+
 }
