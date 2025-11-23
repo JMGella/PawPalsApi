@@ -66,10 +66,12 @@ public class DogController {
         return ResponseEntity.ok(updated);
     }
 
-    @Operation(summary = "Search Dog by Name")
+    @Operation(summary = "Search dogs by name")
     @GetMapping("/dogs/search")
-    public List<DogOutDTO> searchDogs(@RequestParam String name) {
-        return dogService.searchDogsByName(name);
+    public ResponseEntity<List<DogOutDTO>> searchDogsByName(@RequestParam String name) {
+        logger.info("Searching dogs by name {}", name);
+        List<DogOutDTO> results = dogService.searchDogsByName(name);
+        return ResponseEntity.ok(results);
     }
 
 
