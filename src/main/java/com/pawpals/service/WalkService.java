@@ -31,7 +31,7 @@ public class WalkService {
     }
 
     public WalkOutDTO createWalk(WalkInDTO in) {
-        User creator = userRepository.findById(in.getCreatorId()).orElseThrow(() -> new IllegalArgumentException("Creator not found"));
+        User creator = userRepository.findById(in.getCreatorId()).orElseThrow(() -> new ResourceNotFoundException("Creator not found"));
 
         Walk walk = new Walk();
         walk.setCreator(creator);
@@ -50,7 +50,7 @@ public class WalkService {
 
     @Transactional(readOnly = true)
     public WalkOutDTO getWalkById(Long id) {
-        Walk walk = walkRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Walk not found"));
+        Walk walk = walkRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Walk not found"));
         return modelMapper.map(walk, WalkOutDTO.class);
     }
 
@@ -69,7 +69,7 @@ public class WalkService {
     }
 
     public void cancelWalk(Long walkId) {
-        Walk walk = walkRepository.findById(walkId).orElseThrow(() -> new IllegalArgumentException("Walk not found"));
+        Walk walk = walkRepository.findById(walkId).orElseThrow(() -> new ResourceNotFoundException("Walk not found"));
         walk.setStatus(WalkStatus.CANCELLED);
         walkRepository.save(walk);
     }
@@ -77,7 +77,7 @@ public class WalkService {
     @Transactional
     public WalkOutDTO updateWalk(Long walkId, WalkInDTO body) {
 
-        Walk walk = walkRepository.findById(walkId).orElseThrow(() -> new IllegalArgumentException("Walk not found"));
+        Walk walk = walkRepository.findById(walkId).orElseThrow(() -> new ResourceNotFoundException("Walk not found"));
 
         if (body.getTitle() != null) {
             walk.setTitle(body.getTitle());
