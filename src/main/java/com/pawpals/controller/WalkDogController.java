@@ -43,7 +43,7 @@ public class WalkDogController {
     }
 
     @Operation(summary = "Remove a dog participation from a walk")
-    @DeleteMapping("/walks/dogs/{walkDogId}")
+    @DeleteMapping("/walks/remove-dog/{walkDogId}")
     public ResponseEntity<Void> leaveWalk(@PathVariable Long walkDogId) {
         logger.info("BEGIN Leaving walk " + walkDogId);
         walkDogService.leaveWalk(walkDogId);
@@ -52,7 +52,7 @@ public class WalkDogController {
     }
 
     @Operation(summary = "Update dog participation status in a walk")
-    @PatchMapping("/walks/dogs/{walkDogId}")
+    @PatchMapping("/walks/update-participation/{walkDogId}")
     public ResponseEntity<WalkDogOutDTO> updateParticipationStatus(@PathVariable Long walkDogId, @RequestBody WalkDogInDTO body) {
 
         logger.info("BEGIN Update participation status " + walkDogId);
