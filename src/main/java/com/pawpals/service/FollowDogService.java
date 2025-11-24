@@ -34,8 +34,8 @@ public class FollowDogService {
     }
 
     public FollowDogOutDTO followDog(FollowDogInDTO in) {
-        User follower = userRepository.findById(in.getFollowerUserId()).orElseThrow(() -> new IllegalArgumentException("Follower user not found"));
-        Dog dog = dogRepository.findById(in.getDogId()).orElseThrow(() -> new IllegalArgumentException("Dog not found"));
+        User follower = userRepository.findById(in.getFollowerUserId()).orElseThrow(() -> new ResourceNotFoundException("Follower user not found"));
+        Dog dog = dogRepository.findById(in.getDogId()).orElseThrow(() -> new ResourceNotFoundException("Dog not found"));
 
         if (followDogRepository.existsByFollowerIdAndDogId(follower.getId(), dog.getId())) {
             throw new IllegalStateException("Already following this dog");
