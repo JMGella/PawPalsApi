@@ -102,4 +102,11 @@ public class WalkService {
         return modelMapper.map(saved, WalkOutDTO.class);
     }
 
+    @Transactional(readOnly = true)
+    public List<WalkOutDTO> getAllWalks() {
+        List<Walk> walks = walkRepository.findAll();
+
+        return modelMapper.map(walks, new TypeToken<List<WalkOutDTO>>() {}.getType());
+    }
+
 }
