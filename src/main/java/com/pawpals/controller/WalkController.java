@@ -3,6 +3,11 @@ package com.pawpals.controller;
 import com.pawpals.model.dto.WalkInDTO;
 import com.pawpals.model.dto.WalkOutDTO;
 import com.pawpals.service.WalkService;
+import com.pawpals.service.WalkDogService;
+import com.pawpals.model.dto.WalkSummaryOutDTO;
+import com.pawpals.model.dto.WalkOutDTO;
+import com.pawpals.model.dto.WalkDogOutDTO;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -19,10 +24,12 @@ import java.util.List;
 public class WalkController {
 
     private final WalkService walkService;
+    private final WalkDogService walkDogService;
     private final Logger logger = LoggerFactory.getLogger(WalkController.class);
 
     public WalkController(WalkService walkService) {
         this.walkService = walkService;
+        this.walkDogService = walkDogService;
     }
 
     @Operation(summary = "Create a walk for a user")
@@ -73,5 +80,21 @@ public class WalkController {
         logger.info("END Update walk " + walkId);
         return ResponseEntity.ok(updated);
     }
+
+    @Operation(summary = "Get walk summary (walk info + participants)")
+@GetMapping("/walks/{walkId}/summary")
+public ResponseEntity<WalkSummaryOutDTO> getWalkSummary(@PathVariable Long walkId) {
+
+    logger.info("BEGIN Get walk summary " + walkId);
+
+    WalkOutDTO walk = walkService.getWalkById(walkId);
+    List<WalkDogOutDTO> participants = walkDogService.getParticipantsByWalk(walkId);
+
+    WalkSummaryOutDTO summary = new WalkSummaryOutDTO(walk, participants);
+
+    logger.info("END Get walk summary " + walkId);
+
+    return ResponseEntity.ok(summary);
+}
 
 }
