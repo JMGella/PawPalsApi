@@ -29,7 +29,7 @@ public class DogService {
     }
 
     public DogOutDTO createDog(Long userId, DogInDTO in) {
-        User owner = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Owner not found"));
+        User owner = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Owner not found"));
 
         Dog dog = new Dog();
         dog.setOwner(owner);
@@ -45,7 +45,7 @@ public class DogService {
 
     @Transactional(readOnly = true)
     public DogOutDTO getDogById(Long id) {
-        Dog dog = dogRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Dog not found"));
+        Dog dog = dogRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Dog not found"));
         return modelMapper.map(dog, DogOutDTO.class);
     }
 
@@ -59,7 +59,7 @@ public class DogService {
     @Transactional
     public void deleteDog(Long id) {
         if (!dogRepository.existsById(id)) {
-            throw new IllegalArgumentException("Dog not found");
+            throw new ResourceNotFoundException("Dog not found");
         }
         dogRepository.deleteById(id);
     }
@@ -67,7 +67,7 @@ public class DogService {
     @Transactional
     public DogOutDTO updateDog(Long dogId, DogInDTO body) {
 
-        Dog dog = dogRepository.findById(dogId).orElseThrow(() -> new IllegalArgumentException("Dog not found"));
+        Dog dog = dogRepository.findById(dogId).orElseThrow(() -> new ResourceNotFoundException("Dog not found"));
 
 
         if (body.getName() != null) {
