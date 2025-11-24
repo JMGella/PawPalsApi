@@ -16,4 +16,8 @@ public interface WalkDogRepository extends JpaRepository<WalkDog, Long> {
 
     long countByWalkIdAndStatus(Long walkId, ParticipationStatus status);
 
+    @Query("SELECT wd FROM WalkDog wd WHERE wd.dog.owner.id = :userId")
+    List<WalkDog> findByUserDogs(@Param("userId") Long userId);
+
+
 }
