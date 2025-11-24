@@ -91,6 +91,24 @@ public class WalkDogService {
     return modelMapper.map(participations, new TypeToken<List<WalkDogOutDTO>>() {}.getType());
 }
 
+     @Transactional(readOnly = true)
+    public List<UserDogWalkOutDTO> getWalksForUserDogs(Long userId) {
+
+        List<WalkDog> participations = walkDogRepository.findByUserDogs(userId);
+
+        return participations.stream()
+                .map(wd -> {
+                    UserDogWalkOutDTO dto = new UserDogWalkOutDTO();
+                    dto.setId(wd.getId());
+                    dto.setStatus(wd.getStatus());
+                    dto.setJoinedAt(wd.getJoinedAt());
+                    dto.setDog(modelMapper.map(wd.getDog(), DogOutDTO.class));
+                    dto.setWalk(modelMapper.map(wd.getWalk(), WalkOutDTO.class));
+                    return dto;
+                })
+                .toList();
+    }
+
 
 
 }
