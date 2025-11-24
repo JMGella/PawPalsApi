@@ -34,9 +34,9 @@ public class WalkDogService {
     }
 
     public WalkDogOutDTO joinWalk(WalkDogInDTO in) {
-        Walk walk = walkRepository.findById(in.getWalkId()).orElseThrow(() -> new IllegalArgumentException("Walk not found"));
-        Dog dog = dogRepository.findById(in.getDogId()).orElseThrow(() -> new IllegalArgumentException("Dog not found"));
-        User handler = userRepository.findById(in.getHandlerId()).orElseThrow(() -> new IllegalArgumentException("Handler not found"));
+        Walk walk = walkRepository.findById(in.getWalkId()).orElseThrow(() -> new ResourceNotFoundException("Walk not found"));
+        Dog dog = dogRepository.findById(in.getDogId()).orElseThrow(() -> new ResourceNotFoundException("Dog not found"));
+        User handler = userRepository.findById(in.getHandlerId()).orElseThrow(() -> new ResourceNotFoundException("Handler not found"));
 
         if (walkDogRepository.existsByWalkIdAndDogId(walk.getId(), dog.getId())) {
             throw new IllegalStateException("Dog already joined this walk");
@@ -67,14 +67,14 @@ public class WalkDogService {
     }
 
     public void leaveWalk(Long walkDogId) {
-        WalkDog wd = walkDogRepository.findById(walkDogId).orElseThrow(() -> new IllegalArgumentException("Participation not found"));
+        WalkDog wd = walkDogRepository.findById(walkDogId).orElseThrow(() -> new ResourceNotFoundException("Participation not found"));
         walkDogRepository.delete(wd);
     }
 
     @Transactional
     public WalkDogOutDTO updateParticipationStatus(Long walkDogId, WalkDogInDTO body) {
 
-        WalkDog walkDog = walkDogRepository.findById(walkDogId).orElseThrow(() -> new IllegalArgumentException("Participation not found"));
+        WalkDog walkDog = walkDogRepository.findById(walkDogId).orElseThrow(() -> new ResourceNotFoundException("Participation not found"));
 
         if (body.getStatus() != null) {
             walkDog.setStatus(body.getStatus());
