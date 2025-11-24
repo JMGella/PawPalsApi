@@ -1,5 +1,6 @@
 package com.pawpals.service;
 
+import com.pawpals.exception.ResourceNotFoundException;
 import com.pawpals.model.User;
 import com.pawpals.model.dto.UserInDTO;
 import com.pawpals.model.dto.UserOutDTO;

@@ -1,5 +1,6 @@
 package com.pawpals.service;
 
+import com.pawpals.exception.ResourceNotFoundException;
 import com.pawpals.model.dto.DogOutDTO;
 import com.pawpals.model.dto.FollowDogInDTO;
 import com.pawpals.model.dto.FollowDogOutDTO;

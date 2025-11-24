@@ -1,7 +1,7 @@
 package com.pawpals.service;
 
-import com.pawpals.model.dto.WalkDogInDTO;
-import com.pawpals.model.dto.WalkDogOutDTO;
+import com.pawpals.exception.ResourceNotFoundException;
+import com.pawpals.model.dto.*;
 import com.pawpals.model.*;
 import com.pawpals.repository.DogRepository;
 import com.pawpals.repository.UserRepository;

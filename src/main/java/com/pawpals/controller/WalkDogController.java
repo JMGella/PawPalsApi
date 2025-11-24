@@ -1,5 +1,6 @@
 package com.pawpals.controller;
 
+import com.pawpals.model.dto.UserDogWalkOutDTO;
 import com.pawpals.model.dto.WalkDogInDTO;
 import com.pawpals.model.dto.WalkDogOutDTO;
 import com.pawpals.service.WalkDogService;

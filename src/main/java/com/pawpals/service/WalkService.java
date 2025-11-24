@@ -1,5 +1,6 @@
 package com.pawpals.service;
 
+import com.pawpals.exception.ResourceNotFoundException;
 import com.pawpals.model.dto.WalkInDTO;
 import com.pawpals.model.dto.WalkOutDTO;
 import com.pawpals.model.User;
@@ -12,7 +13,6 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
 import java.util.List;
 

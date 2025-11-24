@@ -3,6 +3,8 @@ package com.pawpals.repository;
 import com.pawpals.model.ParticipationStatus;
 import com.pawpals.model.WalkDog;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

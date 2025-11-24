@@ -3,7 +3,7 @@ package com.pawpals.model.dto;
 import com.pawpals.model.ParticipationStatus;
 import lombok.Data;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 
 @Data
 public class UserDogWalkOutDTO {
@@ -12,5 +12,5 @@ public class UserDogWalkOutDTO {
     private DogOutDTO dog;              
     private WalkOutDTO walk;            
     private ParticipationStatus status; 
-    private Instant joinedAt; 
+    private OffsetDateTime joinedAt;
 }

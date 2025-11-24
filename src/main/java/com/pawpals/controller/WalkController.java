@@ -27,7 +27,7 @@ public class WalkController {
     private final WalkDogService walkDogService;
     private final Logger logger = LoggerFactory.getLogger(WalkController.class);
 
-    public WalkController(WalkService walkService) {
+    public WalkController(WalkService walkService, WalkDogService walkDogService) {
         this.walkService = walkService;
         this.walkDogService = walkDogService;
     }
