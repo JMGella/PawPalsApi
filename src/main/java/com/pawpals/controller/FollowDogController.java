@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pawpalsapi/users/{userId}/follows")
+@RequestMapping("/pawpalsapi/users/{userId}")
 @Tag(name = "Dog Follows", description = "Follow/unfollow dogs")
 public class FollowDogController {
 
@@ -26,14 +26,14 @@ public class FollowDogController {
     }
 
     @Operation(summary = "Get dogs followed by a user")
-    @GetMapping("/dogs")
+    @GetMapping("/followed")
     public ResponseEntity<List<DogOutDTO>> getFollowedDogs(@PathVariable Long userId) {
         logger.info("getFollowedDogs called");
         return ResponseEntity.ok(followDogService.getFollowedDogs(userId));
     }
 
     @Operation(summary = "Follow a dog")
-    @PostMapping("/dogs/{dogId}")
+    @PostMapping("/follow-dog/{dogId}")
     public ResponseEntity<FollowDogOutDTO> followDog(@PathVariable Long userId, @PathVariable Long dogId) {
         FollowDogInDTO in = new FollowDogInDTO(userId, dogId);
         logger.info("BEGIN followDog");
@@ -43,7 +43,7 @@ public class FollowDogController {
     }
 
     @Operation(summary = "Unfollow a dog")
-    @DeleteMapping("/dogs/{dogId}")
+    @DeleteMapping("/follow-dog/{dogId}")
     public ResponseEntity<Void> unfollowDog(@PathVariable Long userId, @PathVariable Long dogId) {
         logger.info("BEGIN unfollowDog");
         followDogService.unfollowDog(userId, dogId);
