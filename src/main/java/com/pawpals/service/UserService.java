@@ -47,7 +47,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserOutDTO getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return modelMapper.map(user, UserOutDTO.class);
     }
 
@@ -61,7 +61,7 @@ public class UserService {
     @Transactional
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("User not found");
+            throw new ResourceNotFoundException("User not found");
         }
         userRepository.deleteById(id);
     }
@@ -69,7 +69,7 @@ public class UserService {
     @Transactional
     public UserOutDTO updateUserPartial(Long userId, UserInDTO body) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (body.getDisplayName() != null) user.setDisplayName(body.getDisplayName());
         if (body.getUsername() != null) user.setUsername(body.getUsername());
