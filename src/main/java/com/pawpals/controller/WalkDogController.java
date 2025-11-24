@@ -62,4 +62,16 @@ public class WalkDogController {
         return ResponseEntity.ok(updated);
     }
 
+    @Operation(summary = "Get all walk participations for a dog")
+    @GetMapping("/dogs/{dogId}/walks")
+    public ResponseEntity<List<WalkDogOutDTO>> getWalksForDog(@PathVariable Long dogId) {
+
+    logger.info("BEGIN Get Walks for Dog " + dogId);
+    List<WalkDogOutDTO> list = walkDogService.getWalkParticipationByDog(dogId);
+    logger.info("END Get Walks for Dog " + dogId);
+
+    return ResponseEntity.ok(list);
+}
+
+
 }
