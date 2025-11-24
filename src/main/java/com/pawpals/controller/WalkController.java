@@ -97,4 +97,13 @@ public ResponseEntity<WalkSummaryOutDTO> getWalkSummary(@PathVariable Long walkI
     return ResponseEntity.ok(summary);
 }
 
+     @Operation(summary = "Get all walks")
+    @GetMapping("/walks")
+    public ResponseEntity<List<WalkOutDTO>> getAllWalks() {
+        logger.info("BEGIN Get all walks");
+        List<WalkOutDTO> walks = walkService.getAllWalks();
+        logger.info("END Get all walks");
+        return ResponseEntity.ok(walks);
+    }
+
 }
