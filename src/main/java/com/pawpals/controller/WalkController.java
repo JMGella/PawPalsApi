@@ -73,7 +73,7 @@ public class WalkController {
     }
 
     @Operation(summary = "Update a walk")
-    @PatchMapping("/{walkId}")
+    @PatchMapping("/walks/{walkId}")
     public ResponseEntity<WalkOutDTO> updateWalk(@PathVariable Long walkId, @Valid @RequestBody WalkInDTO body) {
         logger.info(" BEGIN Update walk " + walkId);
         WalkOutDTO updated = walkService.updateWalk(walkId, body);
