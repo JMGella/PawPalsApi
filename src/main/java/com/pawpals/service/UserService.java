@@ -80,4 +80,13 @@ public class UserService {
         return modelMapper.map(saved, UserOutDTO.class);
     }
 
+    public UserOutDTO getUserByEmail(String email) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        return modelMapper.map(user, UserOutDTO.class);
+    }
+
+
 }
