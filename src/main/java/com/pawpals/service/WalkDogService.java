@@ -110,5 +110,16 @@ public class WalkDogService {
     }
 
 
+    @Transactional(readOnly = true)
+    public List<WalkOutDTO> getWalksByDog(Long dogId) {
+
+        List<WalkDog> participations = walkDogRepository.findByDogId(dogId);
+
+        return participations.stream()
+                .map(wd -> modelMapper.map(wd.getWalk(), WalkOutDTO.class))
+                .toList();
+    }
+
+
 
 }

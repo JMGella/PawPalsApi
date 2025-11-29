@@ -3,6 +3,7 @@ package com.pawpals.controller;
 import com.pawpals.model.dto.UserDogWalkOutDTO;
 import com.pawpals.model.dto.WalkDogInDTO;
 import com.pawpals.model.dto.WalkDogOutDTO;
+import com.pawpals.model.dto.WalkOutDTO;
 import com.pawpals.service.WalkDogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -85,6 +86,16 @@ public class WalkDogController {
     return ResponseEntity.ok(list);
 }
 
+    @Operation(summary = "Get all walks with detail for a dog")
+    @GetMapping("/dogs/{dogId}/walks-detail")
+    public ResponseEntity<List<WalkOutDTO>> getWalksForDogDetail(@PathVariable Long dogId) {
+
+        logger.info("BEGIN Get Walks for Dog " + dogId);
+        List<WalkOutDTO> list = walkDogService.getWalksByDog(dogId);
+        logger.info("END Get Walks for Dog " + dogId);
+
+        return ResponseEntity.ok(list);
+    }
 
 
 }
