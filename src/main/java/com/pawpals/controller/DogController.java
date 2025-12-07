@@ -28,9 +28,8 @@ public class DogController {
     @Operation(summary = "Create dog for a user")
     @PostMapping("/users/{userId}/dogs")
     public ResponseEntity<DogOutDTO> createDog(@PathVariable Long userId, @Valid @RequestBody DogInDTO body) {
-        body.setOwnerId(userId); // forzamos el owner desde la URL
         logger.info("BEGIN Creating dog {}", body);
-        DogOutDTO created = dogService.createDog(body);
+        DogOutDTO created = dogService.createDog(userId, body);
         logger.info("END Creating dog {}", created);
         return ResponseEntity.ok(created);
     }
@@ -57,5 +56,25 @@ public class DogController {
         logger.info("END Deleting dog {}", dogId);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Update dog by id")
+    @PatchMapping("/dogs/{dogId}")
+    public ResponseEntity<DogOutDTO> updateDog(@PathVariable Long dogId, @RequestBody DogInDTO body) {
+        logger.info(" BEGIN Updating dog {}", dogId);
+        DogOutDTO updated = dogService.updateDog(dogId, body);
+        logger.info("END Updating dog {}", updated);
+        return ResponseEntity.ok(updated);
+    }
+
+    @Operation(summary = "Search dogs by name")
+    @GetMapping("/dogs/search")
+    public ResponseEntity<List<DogOutDTO>> searchDogsByName(@RequestParam String name) {
+        logger.info("Searching dogs by name {}", name);
+        List<DogOutDTO> results = dogService.searchDogsByName(name);
+        return ResponseEntity.ok(results);
+    }
+
+
+
 
 }

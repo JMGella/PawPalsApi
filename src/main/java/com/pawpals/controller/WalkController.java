@@ -3,6 +3,11 @@ package com.pawpals.controller;
 import com.pawpals.model.dto.WalkInDTO;
 import com.pawpals.model.dto.WalkOutDTO;
 import com.pawpals.service.WalkService;
+import com.pawpals.service.WalkDogService;
+import com.pawpals.model.dto.WalkSummaryOutDTO;
+import com.pawpals.model.dto.WalkOutDTO;
+import com.pawpals.model.dto.WalkDogOutDTO;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -19,10 +24,12 @@ import java.util.List;
 public class WalkController {
 
     private final WalkService walkService;
+    private final WalkDogService walkDogService;
     private final Logger logger = LoggerFactory.getLogger(WalkController.class);
 
-    public WalkController(WalkService walkService) {
+    public WalkController(WalkService walkService, WalkDogService walkDogService) {
         this.walkService = walkService;
+        this.walkDogService = walkDogService;
     }
 
     @Operation(summary = "Create a walk for a user")
@@ -57,11 +64,46 @@ public class WalkController {
     }
 
     @Operation(summary = "Cancel a walk")
-    @PostMapping("/walks/{walkId}/cancel")
+    @DeleteMapping("/walks/{walkId}/cancel")
     public ResponseEntity<Void> cancelWalk(@PathVariable Long walkId) {
         logger.info(" BEGIN Cancel walk " + walkId);
         walkService.cancelWalk(walkId);
         logger.info("END Cancel walk " + walkId);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Update a walk")
+    @PatchMapping("/walks/{walkId}")
+    public ResponseEntity<WalkOutDTO> updateWalk(@PathVariable Long walkId, @RequestBody WalkInDTO body) {
+        logger.info(" BEGIN Update walk " + walkId);
+        WalkOutDTO updated = walkService.updateWalk(walkId, body);
+        logger.info("END Update walk " + walkId);
+        return ResponseEntity.ok(updated);
+    }
+
+    @Operation(summary = "Get walk summary (walk info + participants)")
+@GetMapping("/walks/{walkId}/summary")
+public ResponseEntity<WalkSummaryOutDTO> getWalkSummary(@PathVariable Long walkId) {
+
+    logger.info("BEGIN Get walk summary " + walkId);
+
+    WalkOutDTO walk = walkService.getWalkById(walkId);
+    List<WalkDogOutDTO> participants = walkDogService.getParticipantsByWalk(walkId);
+
+    WalkSummaryOutDTO summary = new WalkSummaryOutDTO(walk, participants);
+
+    logger.info("END Get walk summary " + walkId);
+
+    return ResponseEntity.ok(summary);
+}
+
+     @Operation(summary = "Get all walks")
+    @GetMapping("/walks")
+    public ResponseEntity<List<WalkOutDTO>> getAllWalks() {
+        logger.info("BEGIN Get all walks");
+        List<WalkOutDTO> walks = walkService.getAllWalks();
+        logger.info("END Get all walks");
+        return ResponseEntity.ok(walks);
+    }
+
 }

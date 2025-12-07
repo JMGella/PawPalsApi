@@ -1,7 +1,9 @@
 package com.pawpals.controller;
 
+import com.pawpals.model.dto.UserDogWalkOutDTO;
 import com.pawpals.model.dto.WalkDogInDTO;
 import com.pawpals.model.dto.WalkDogOutDTO;
+import com.pawpals.model.dto.WalkOutDTO;
 import com.pawpals.service.WalkDogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,11 +45,57 @@ public class WalkDogController {
     }
 
     @Operation(summary = "Remove a dog participation from a walk")
-    @DeleteMapping("/walks/dogs/{walkDogId}")
+    @DeleteMapping("/walks/remove-dog/{walkDogId}")
     public ResponseEntity<Void> leaveWalk(@PathVariable Long walkDogId) {
         logger.info("BEGIN Leaving walk " + walkDogId);
         walkDogService.leaveWalk(walkDogId);
         logger.info("END Leaving walk " + walkDogId);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Update dog participation status in a walk")
+    @PatchMapping("/walks/update-participation/{walkDogId}")
+    public ResponseEntity<WalkDogOutDTO> updateParticipationStatus(@PathVariable Long walkDogId, @RequestBody WalkDogInDTO body) {
+
+        logger.info("BEGIN Update participation status " + walkDogId);
+        WalkDogOutDTO updated = walkDogService.updateParticipationStatus(walkDogId, body);
+        logger.info("END Update participation status " + walkDogId);
+
+        return ResponseEntity.ok(updated);
+    }
+
+    @Operation(summary = "Get all walk participations for a dog")
+    @GetMapping("/dogs/{dogId}/walks")
+    public ResponseEntity<List<WalkDogOutDTO>> getWalksForDog(@PathVariable Long dogId) {
+
+    logger.info("BEGIN Get Walks for Dog " + dogId);
+    List<WalkDogOutDTO> list = walkDogService.getWalkParticipationByDog(dogId);
+    logger.info("END Get Walks for Dog " + dogId);
+
+    return ResponseEntity.ok(list);
+}
+
+    @Operation(summary = "Get all walks joined by user's dogs")
+    @GetMapping("/users/{userId}/walks/joined")
+    public ResponseEntity<List<UserDogWalkOutDTO>> getWalksForUserDogs(@PathVariable Long userId) {
+
+    logger.info("BEGIN Get Walks for user dogs " + userId);
+    List<UserDogWalkOutDTO> list = walkDogService.getWalksForUserDogs(userId);
+    logger.info("END Get Walks for user dogs " + userId);
+
+    return ResponseEntity.ok(list);
+}
+
+    @Operation(summary = "Get all walks with detail for a dog")
+    @GetMapping("/dogs/{dogId}/walks-detail")
+    public ResponseEntity<List<WalkOutDTO>> getWalksForDogDetail(@PathVariable Long dogId) {
+
+        logger.info("BEGIN Get Walks for Dog " + dogId);
+        List<WalkOutDTO> list = walkDogService.getWalksByDog(dogId);
+        logger.info("END Get Walks for Dog " + dogId);
+
+        return ResponseEntity.ok(list);
+    }
+
+
 }

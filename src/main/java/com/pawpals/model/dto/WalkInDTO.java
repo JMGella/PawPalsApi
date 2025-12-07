@@ -1,5 +1,6 @@
 package com.pawpals.model.dto;
 
+import com.pawpals.model.WalkStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,6 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class WalkInDTO {
 
-    @NotNull
     private Long creatorId;
 
     @NotBlank
@@ -33,4 +33,6 @@ public class WalkInDTO {
     private Double longitude;
 
     private Integer maxDogs;
+
+    private WalkStatus status;
 }

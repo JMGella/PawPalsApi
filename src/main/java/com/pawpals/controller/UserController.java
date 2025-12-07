@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,6 +58,36 @@ public class UserController {
         logger.info("END DELETE User");
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Update user by id")
+    @PatchMapping("/{userId}")
+    public ResponseEntity<UserOutDTO> updateUser(@PathVariable Long userId, @RequestBody UserInDTO body) {
+        logger.info("BEGIN UPDATE User");
+        UserOutDTO updated = userService.updateUserPartial(userId, body);
+        logger.info("END UPDATE User");
+        return ResponseEntity.ok(updated);
+    }
+
+    @Operation(summary = "Get currently authenticated user")
+    @GetMapping("/me")
+    public ResponseEntity<UserOutDTO> getCurrentUser() {
+        logger.info("BEGIN Get Current User");
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new IllegalStateException("User is not authenticated");
+        }
+
+        String email = auth.getName(); // subject del JWT
+
+        UserOutDTO dto = userService.getUserByEmail(email);
+
+        logger.info("END Get Current User");
+        return ResponseEntity.ok(dto);
+    }
+
+
 
 }
 

@@ -26,7 +26,6 @@ public class JpaUserDetailsService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("Invalid email/password"));
 
-        // De momento todos ROLE_USER
         List<GrantedAuthority> authorities =
                 List.of(new SimpleGrantedAuthority("ROLE_USER"));
 

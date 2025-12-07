@@ -3,6 +3,8 @@ package com.pawpals.repository;
 import com.pawpals.model.ParticipationStatus;
 import com.pawpals.model.WalkDog;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -15,5 +17,9 @@ public interface WalkDogRepository extends JpaRepository<WalkDog, Long> {
     List<WalkDog> findByDogId(Long dogId);
 
     long countByWalkIdAndStatus(Long walkId, ParticipationStatus status);
+
+    @Query("SELECT wd FROM WalkDog wd WHERE wd.dog.owner.id = :userId")
+    List<WalkDog> findByUserDogs(@Param("userId") Long userId);
+
 
 }

@@ -10,8 +10,6 @@ public interface FollowDogRepository extends JpaRepository<FollowDog, Long> {
 
     boolean existsByFollowerIdAndDogId(Long followerId, Long dogId);
 
-    Optional<FollowDog> findByFollowerIdAndDogId(Long followerId, Long dogId);
-
     List<FollowDog> findByFollowerId(Long followerId);
 
     void deleteByFollowerIdAndDogId(Long followerId, Long dogId);

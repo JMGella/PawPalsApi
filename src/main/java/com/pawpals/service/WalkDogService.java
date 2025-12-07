@@ -1,7 +1,7 @@
 package com.pawpals.service;
 
-import com.pawpals.model.dto.WalkDogInDTO;
-import com.pawpals.model.dto.WalkDogOutDTO;
+import com.pawpals.exception.ResourceNotFoundException;
+import com.pawpals.model.dto.*;
 import com.pawpals.model.*;
 import com.pawpals.repository.DogRepository;
 import com.pawpals.repository.UserRepository;
@@ -34,9 +34,9 @@ public class WalkDogService {
     }
 
     public WalkDogOutDTO joinWalk(WalkDogInDTO in) {
-        Walk walk = walkRepository.findById(in.getWalkId()).orElseThrow(() -> new IllegalArgumentException("Walk not found"));
-        Dog dog = dogRepository.findById(in.getDogId()).orElseThrow(() -> new IllegalArgumentException("Dog not found"));
-        User handler = userRepository.findById(in.getHandlerId()).orElseThrow(() -> new IllegalArgumentException("Handler not found"));
+        Walk walk = walkRepository.findById(in.getWalkId()).orElseThrow(() -> new ResourceNotFoundException("Walk not found"));
+        Dog dog = dogRepository.findById(in.getDogId()).orElseThrow(() -> new ResourceNotFoundException("Dog not found"));
+        User handler = userRepository.findById(in.getHandlerId()).orElseThrow(() -> new ResourceNotFoundException("Handler not found"));
 
         if (walkDogRepository.existsByWalkIdAndDogId(walk.getId(), dog.getId())) {
             throw new IllegalStateException("Dog already joined this walk");
@@ -67,7 +67,59 @@ public class WalkDogService {
     }
 
     public void leaveWalk(Long walkDogId) {
-        WalkDog wd = walkDogRepository.findById(walkDogId).orElseThrow(() -> new IllegalArgumentException("Participation not found"));
+        WalkDog wd = walkDogRepository.findById(walkDogId).orElseThrow(() -> new ResourceNotFoundException("Participation not found"));
         walkDogRepository.delete(wd);
     }
+
+    @Transactional
+    public WalkDogOutDTO updateParticipationStatus(Long walkDogId, WalkDogInDTO body) {
+
+        WalkDog walkDog = walkDogRepository.findById(walkDogId).orElseThrow(() -> new ResourceNotFoundException("Participation not found"));
+
+        if (body.getStatus() != null) {
+            walkDog.setStatus(body.getStatus());
+            walkDog = walkDogRepository.save(walkDog);
+        }
+
+        return modelMapper.map(walkDog, WalkDogOutDTO.class);
+    }
+
+    @Transactional(readOnly = true)
+    public List<WalkDogOutDTO> getWalkParticipationByDog(Long dogId) {
+    List<WalkDog> participations = walkDogRepository.findByDogId(dogId);
+
+    return modelMapper.map(participations, new TypeToken<List<WalkDogOutDTO>>() {}.getType());
+}
+
+     @Transactional(readOnly = true)
+    public List<UserDogWalkOutDTO> getWalksForUserDogs(Long userId) {
+
+        List<WalkDog> participations = walkDogRepository.findByUserDogs(userId);
+
+        return participations.stream()
+                .map(wd -> {
+                    UserDogWalkOutDTO dto = new UserDogWalkOutDTO();
+                    dto.setId(wd.getId());
+                    dto.setStatus(wd.getStatus());
+                    dto.setJoinedAt(wd.getJoinedAt());
+                    dto.setDog(modelMapper.map(wd.getDog(), DogOutDTO.class));
+                    dto.setWalk(modelMapper.map(wd.getWalk(), WalkOutDTO.class));
+                    return dto;
+                })
+                .toList();
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<WalkOutDTO> getWalksByDog(Long dogId) {
+
+        List<WalkDog> participations = walkDogRepository.findByDogId(dogId);
+
+        return participations.stream()
+                .map(wd -> modelMapper.map(wd.getWalk(), WalkOutDTO.class))
+                .toList();
+    }
+
+
+
 }

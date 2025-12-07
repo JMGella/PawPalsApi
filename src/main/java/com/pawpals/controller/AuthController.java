@@ -58,7 +58,7 @@ public class AuthController {
 
         JwtResponse response = new JwtResponse(
                 jwt,
-                userDetails.getUsername(), // tu email
+                userDetails.getUsername(),
                 roles
         );
 

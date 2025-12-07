@@ -1,5 +1,6 @@
 package com.pawpals.model.dto;
 
+import com.pawpals.model.ParticipationStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WalkDogInDTO {
 
-    @NotNull
+
     private Long walkId;
 
     @NotNull
@@ -18,4 +19,6 @@ public class WalkDogInDTO {
 
     @NotNull
     private Long handlerId;
+
+    private ParticipationStatus status;
 }
