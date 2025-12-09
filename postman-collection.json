@@ -1,0 +1,581 @@
+{
+  "info": {
+    "name": "PawPals API - Full Collection",
+    "_postman_id": "00000000-0000-0000-0000-000000000001",
+    "description": "Complete Postman collection for PawPals Spring Boot API (auth, users, dogs, follows, walks, participation). Base path: /pawpalsapi.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login - Get JWT Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/token",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "auth", "token" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@pawpals.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "description": "Authenticate user and retrieve JWT token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User (register)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@pawpals.com\",\n  \"password\": \"password123\",\n  \"displayName\": \"Test User\",\n  \"username\": \"testuser\",\n  \"profileImageUrl\": \"https://example.com/avatar.png\"\n}"
+            },
+            "description": "Create new user (public)."
+          }
+        },
+        {
+          "name": "Get Current User (me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "me" ]
+            },
+            "description": "Get data of currently authenticated user (from JWT)."
+          }
+        },
+        {
+          "name": "Get User By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "{{userId}}" ]
+            },
+            "description": "Get user by id."
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users" ]
+            },
+            "description": "Get all users."
+          }
+        },
+        {
+          "name": "Update User (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "{{userId}}" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"Updated Name\",\n  \"username\": \"updatedusername\",\n  \"profileImageUrl\": \"https://example.com/new-avatar.png\"\n}"
+            },
+            "description": "Partial update of user."
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "{{userId}}" ]
+            },
+            "description": "Delete user by id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dogs",
+      "item": [
+        {
+          "name": "Create Dog For User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/dogs",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "{{userId}}", "dogs" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Luna\",\n  \"breed\": \"Golden Retriever\",\n  \"birthdate\": \"2020-05-17\",\n  \"description\": \"Very friendly dog that gets along with others.\",\n  \"profileImageUrl\": \"https://example.com/luna.jpg\"\n}"
+            },
+            "description": "Create dog owned by a user."
+          }
+        },
+        {
+          "name": "Get Dogs By User",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/dogs",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "{{userId}}", "dogs" ]
+            },
+            "description": "Get all dogs for a given user."
+          }
+        },
+        {
+          "name": "Get Dog By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dogs/{{dogId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "dogs", "{{dogId}}" ]
+            },
+            "description": "Get dog details by id."
+          }
+        },
+        {
+          "name": "Update Dog (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dogs/{{dogId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "dogs", "{{dogId}}" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Luna Updated\",\n  \"description\": \"Very friendly and calm.\",\n  \"profileImageUrl\": \"https://example.com/luna-updated.jpg\"\n}"
+            },
+            "description": "Partial update of dog."
+          }
+        },
+        {
+          "name": "Delete Dog",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dogs/{{dogId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "dogs", "{{dogId}}" ]
+            },
+            "description": "Delete dog by id."
+          }
+        },
+        {
+          "name": "Search Dogs By Name",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dogs/search?name={{searchName}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "dogs", "search" ],
+              "query": [
+                { "key": "name", "value": "{{searchName}}" }
+              ]
+            },
+            "description": "Search dogs by (partial, case-insensitive) name."
+          }
+        },
+        {
+          "name": "Get Dog Walk Participations (WalkDog)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dogs/{{dogId}}/walks",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "dogs", "{{dogId}}", "walks" ]
+            },
+            "description": "Get all walk participations (WalkDogOutDTO) for a specific dog."
+          }
+        },
+        {
+          "name": "Get Walks For Dog (detail)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dogs/{{dogId}}/walks-detail",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "dogs", "{{dogId}}", "walks-detail" ]
+            },
+            "description": "Get all walks (WalkOutDTO) for a specific dog."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dog Follows",
+      "item": [
+        {
+          "name": "Get Followed Dogs By User",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/followed",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "{{userId}}", "followed" ]
+            },
+            "description": "Get dogs followed by a user."
+          }
+        },
+        {
+          "name": "Follow Dog",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/follow-dog/{{dogId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "{{userId}}", "follow-dog", "{{dogId}}" ]
+            },
+            "description": "Follow a dog."
+          }
+        },
+        {
+          "name": "Unfollow Dog",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/follow-dog/{{dogId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "{{userId}}", "follow-dog", "{{dogId}}" ]
+            },
+            "description": "Unfollow a dog."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Walks",
+      "item": [
+        {
+          "name": "Create Walk For User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/walks",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "{{userId}}", "walks" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Evening park walk\",\n  \"description\": \"Relaxed walk around the park.\",\n  \"startTime\": \"2025-12-01T18:00:00Z\",\n  \"endTime\": \"2025-12-01T19:00:00Z\",\n  \"latitude\": 40.4168,\n  \"longitude\": -3.7038,\n  \"maxDogs\": 5\n}"
+            },
+            "description": "Create a walk for a given creator user."
+          }
+        },
+        {
+          "name": "Get Walks Created By User",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/walks",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "{{userId}}", "walks" ]
+            },
+            "description": "Get walks created by a specific user."
+          }
+        },
+        {
+          "name": "Get All Walks",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/walks",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "walks" ]
+            },
+            "description": "Get all walks."
+          }
+        },
+        {
+          "name": "Get Upcoming Walks",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/walks/upcoming",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "walks", "upcoming" ]
+            },
+            "description": "Get upcoming scheduled walks."
+          }
+        },
+        {
+          "name": "Get Walk By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/walks/{{walkId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "walks", "{{walkId}}" ]
+            },
+            "description": "Get walk by id."
+          }
+        },
+        {
+          "name": "Update Walk (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/walks/{{walkId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "walks", "{{walkId}}" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated walk title\",\n  \"description\": \"Updated description.\",\n  \"maxDogs\": 8\n}"
+            },
+            "description": "Partial update of a walk."
+          }
+        },
+        {
+          "name": "Cancel Walk",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/walks/{{walkId}}/cancel",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "walks", "{{walkId}}", "cancel" ]
+            },
+            "description": "Cancel a walk by id."
+          }
+        },
+        {
+          "name": "Get Walk Summary (walk + participants)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/walks/{{walkId}}/summary",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "walks", "{{walkId}}", "summary" ]
+            },
+            "description": "Get walk info plus participants (WalkSummaryOutDTO)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Walk Participation",
+      "item": [
+        {
+          "name": "Join Walk With Dog",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/walks/{{walkId}}/dogs",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "walks", "{{walkId}}", "dogs" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dogId\": {{dogId}},\n  \"handlerId\": {{userId}}\n}"
+            },
+            "description": "Join a walk with a dog."
+          }
+        },
+        {
+          "name": "Get Participants Of Walk",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/walks/{{walkId}}/dogs",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "walks", "{{walkId}}", "dogs" ]
+            },
+            "description": "Get all dogs participating in a walk."
+          }
+        },
+        {
+          "name": "Update Participation Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/walks/update-participation/{{walkDogId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "walks", "update-participation", "{{walkDogId}}" ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"CANCELLED\"\n}"
+            },
+            "description": "Update dog participation status in a walk (ParticipationStatus)."
+          }
+        },
+        {
+          "name": "Remove Dog Participation From Walk",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/walks/remove-dog/{{walkDogId}}",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "walks", "remove-dog", "{{walkDogId}}" ]
+            },
+            "description": "Remove a dog's participation from a walk."
+          }
+        },
+        {
+          "name": "Get Walks Joined By User's Dogs",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}/walks/joined",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "users", "{{userId}}", "walks", "joined" ]
+            },
+            "description": "Get all walks where any of the user's dogs is participating."
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/pawpalsapi"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": "1"
+    },
+    {
+      "key": "dogId",
+      "value": "1"
+    },
+    {
+      "key": "walkId",
+      "value": "1"
+    },
+    {
+      "key": "walkDogId",
+      "value": "1"
+    },
+    {
+      "key": "searchName",
+      "value": "Luna"
+    }
+  ]
+}
