@@ -1,8 +1,8 @@
 {
   "info": {
-    "name": "PawPals API - Full Collection",
+    "name": "PawPals API",
     "_postman_id": "00000000-0000-0000-0000-000000000001",
-    "description": "Complete Postman collection for PawPals Spring Boot API (auth, users, dogs, follows, walks, participation). Base path: /pawpalsapi.",
+    "description": "",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
